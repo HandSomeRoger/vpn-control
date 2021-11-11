@@ -27,3 +27,8 @@ if __name__ == '__main__':
 
     createcrt(u="jintian2")
 
+'''
+注册成功返回证书文件下载地址以及，VPN使用证书,和VPN安装文件
+
+192.168.149.100/root/luojie.ovpn
+'''
