@@ -25,5 +25,5 @@ def createcrt(u):
     print(stdout.read())
 if __name__ == '__main__':
 
-    createcrt(u="jintian")
+    createcrt(u="jintian2")
 
