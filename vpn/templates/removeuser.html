@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>注册用户</title>
+    <title>删除用户</title>
     <style type="text/css">
 			body{
 				margin: 0px;
@@ -46,9 +46,7 @@
 <p>
     用户: <input type="text" id="username">
 </p>
-<p>
-    密码: <input type="text" id="password">
-</p>
+
 
 <button type="button" onclick="dianwo()" id="button">提交</button>
 
@@ -72,9 +70,7 @@
         <div id="header">
             <!--<span>我是弹窗</span>-->
             执行结果: <input type="text" id="result" disabled="disabled">
-            <p>
-            <a id="link">文档链接下载地址</a>
-            </p>
+
             <div id="header-right" onclick="hidder()">x</div>
         </div>
     </div>
@@ -98,7 +94,7 @@
             type: 'post',
 <!--            contentType: 'application/json; charset=UTF-8',-->
 <!--            dataType: 'json',-->
-            data: {'username':$('#username').val(), 'password':$('#password').val()},
+            data: {'username':$('#username').val()},
             success:function (data) {
 
 
@@ -118,26 +114,7 @@
 
 </script>
 
-<script>
-    $('#button2').click(function () {
-        $.ajax({
-            url: '/show',
-            type: 'get',
 
-            data: {},
-            success:function (data) {
-                $('#result').val(data)
-
-            },
-            error:function (xhr, type) {
-            alert(error)
-            }
-
-        })
-    })
-
-
-</script>
 </body>
 </html>
 
