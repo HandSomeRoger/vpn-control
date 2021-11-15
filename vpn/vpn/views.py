@@ -2,10 +2,10 @@ import json
 
 from django.shortcuts import render
 import paramiko
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
-#ssh_ip = "192.168.149.100"
-ssh_ip = "192.168.31.152"
+ssh_ip = "192.168.149.100"
+#ssh_ip = "192.168.31.152"
 ssh_port = 22
 ssh_username = "root"
 ssh_password = "Roger645174748"
@@ -73,13 +73,24 @@ def reg_view(request):
         if user in all2:
             print("账号重复")
             # return HttpResponse("%s 账号重复!" % user)
-            return HttpResponse(json.dumps(all2))
+            #return HttpResponse(json.dumps(all2))
+            return JsonResponse("%s 账号重复!" % user, safe=False)
+
+
         elif pwd == '':
             print("密码不能为空")
-            return HttpResponse("%s 的密码不能为空!" % user)
+            return JsonResponse("%s 的密码不能为空!" % user, safe=False)
 
         else:
             insertuser(user, pwd)
             createcrt(user)
             print("账户开通成功")
-            return HttpResponse("%s 的账户开通成功!" % user)
+            url_address = "http://192.168.149.100/root/" + user + ".ovpn"
+
+            res = {"result": None, "url": None}
+            res["result"] = "%s 的账户开通成功!" % user
+            res["url"] = url_address
+            #print(type(res))
+
+
+            return JsonResponse(res, safe=False)

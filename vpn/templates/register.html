@@ -56,7 +56,7 @@
         <div id="header">
             <!--<span>我是弹窗</span>-->
             执行结果: <input type="text" id="result" disabled="disabled">
-            <a id="link">文档链接:</a>
+            <a id="link">文档链接下载地址</a>
 
             <div id="header-right" onclick="hidder()">x</div>
         </div>
@@ -79,11 +79,13 @@
         $.ajax({
             url: '/reg',
             type: 'post',
-            contentType: 'application/json; charset=UTF-8',
-            dataType: 'json',
+<!--            contentType: 'application/json; charset=UTF-8',-->
+<!--            dataType: 'json',-->
             data: {'username':$('#username').val(), 'password':$('#password').val()},
             success:function (data) {
-<!--                var shuju = JSON.parse(data);-->
+
+<!--                var shut = JSON.parse(data);-->
+<!--                var shut = eval('(' + data + ')');-->
                 $('#result').val(data)
                 if (data.indexOf('成功') != -1 ){
                     $('#link').attr('href', "https://www.baidu.com");
@@ -94,7 +96,6 @@
             }
 
         })
-    alert("1")
     })
 
 
