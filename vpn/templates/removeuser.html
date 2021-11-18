@@ -90,19 +90,13 @@
 <script>
     $('#button').click(function () {
         $.ajax({
-            url: '/reg',
+            url: '/del',
             type: 'post',
 <!--            contentType: 'application/json; charset=UTF-8',-->
 <!--            dataType: 'json',-->
             data: {'username':$('#username').val()},
             success:function (data) {
-
-
                 $('#result').val(data.result)
-                if (data.result.indexOf('成功') != -1 ){
-
-                    $('#link').attr('href', data.url);
-                }
             },
             error:function (xhr, type) {
             alert(xhr, type)

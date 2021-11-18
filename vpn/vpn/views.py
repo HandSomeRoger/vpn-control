@@ -3,7 +3,7 @@ import paramiko
 from django.http import HttpResponse, JsonResponse
 
 # ssh_ip = "192.168.149.100"
-ssh_ip = "192.168.31.152"
+ssh_ip = "10.0.4.11"
 ssh_port = 22
 ssh_username = "root"
 ssh_password = "Roger645174748"
@@ -17,7 +17,7 @@ def insertuser(u, p):
     '''建立ssh连接'''
     ssh_client.connect(hostname=ssh_ip, port=ssh_port, username=ssh_username, password=ssh_password)
     '''拼接shell语句'''
-    insertusercmd = "echo " + u + " " + p + " " ">> /tmp/test"
+    insertusercmd = "echo " + u + " " + p + " " ">> /etc/openvpn/userfile.sh"
     ssh_client.exec_command(insertusercmd)
 
 def removeuser(u):
@@ -25,8 +25,18 @@ def removeuser(u):
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     '''建立ssh连接'''
     ssh_client.connect(hostname=ssh_ip, port=ssh_port, username=ssh_username, password=ssh_password)
-    '''拼接shell语句'''
-    removeusercmd =
+
+    '''拼接grep命令 获取用户所在行数'''
+    find_user_id = "grep -nw" + " " + u + " " + "/etc/openvpn/userfile.sh  | awk -F ':' '{print $1}'"
+    '''执行grep命令，将获取行数写入uid这个对象'''
+    print(find_user_id)
+    stdin, stdout, stderr = ssh_client.exec_command(find_user_id)
+    '''将标准输出转int，随后转str，因为stdin.write不能接受int数据类型的输入'''
+    uid = int(stdout.read())
+    uid = str(uid)
+
+    removeusercmd = "sed -i '" + uid + "d' /etc/openvpn/userfile.sh"
+    ssh_client.exec_command(removeusercmd)
 
 def sshGetAllName():
     ssh_client = paramiko.SSHClient()
@@ -75,7 +85,7 @@ def removecrt(u):
     '''拼接grep命令 获取用户所在行数'''
     find_user_id = "grep -nw" + " " + u + " " + "/etc/openvpn/userfile.sh  | awk -F ':' '{print $1}'"
     '''执行grep命令，将获取行数写入uid这个对象'''
-    print(find_user_id)
+    print("查找语句为" + find_user_id)
     stdin, stdout, stderr = ssh_client.exec_command(find_user_id)
     '''将标准输出转int，随后转str，因为stdin.write不能接受int数据类型的输入'''
     uid = int(stdout.read())
@@ -83,7 +93,7 @@ def removecrt(u):
     # uid = stdout.read()
     # uid = str(uid)
     # uid = uid[2:-3]
-    print(uid)
+    print(u + "的uid为" + uid)
     '''执行服务器上的删除用户的交互式脚本'''
     stdin, stdout, stderr = ssh_client.exec_command("sh /data/openvpn-install-master/openvpn-install.sh")
     '''输入2，选择删除用户'''
@@ -94,7 +104,7 @@ def removecrt(u):
     '''输入y并且回车'''
     stdin.write('y\n')
     stdin.flush()
-    print(stdout.read())
+
 
 
 def reg_view(request):
@@ -151,3 +161,17 @@ def remove_view(request):
 
         elif user in all2:
             print("%s 账号已删除" % user)
+            removecrt(user)
+            removeuser(user)
+            res = {"result": "%s 的账户删除成功!" % user}
+            return JsonResponse(res, safe=False)
+
+        else:
+            print("%s 账号不存在" % user)
+            res = {"result": "%s 的账户不存在!" % user}
+            return JsonResponse(res, safe=False)
+
+
+def index_view(request):
+    if request.method == 'GET':
+        return render(request, 'index.html')

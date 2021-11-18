@@ -19,4 +19,6 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('reg', views.reg_view),
+    path('del', views.remove_view),
+    path('', views.index_view),
 ]
