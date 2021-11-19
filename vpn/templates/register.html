@@ -73,7 +73,13 @@
             <!--<span>我是弹窗</span>-->
             执行结果: <input type="text" id="result" disabled="disabled">
             <p>
-            <a id="link">文档链接下载地址</a>
+            <a id="link">证书文件下载地址</a>
+            </p>
+            <p>
+            <a id="link2">安装文件下载地址</a>
+            </p>
+            <p>
+            <a id="link3">使用文档下载地址</a>
             </p>
             <div id="header-right" onclick="hidder()">x</div>
         </div>
@@ -104,8 +110,9 @@
 
                 $('#result').val(data.result)
                 if (data.result.indexOf('成功') != -1 ){
-
                     $('#link').attr('href', data.url);
+                    $('#link2').attr('href', data.url2);
+                    $('#link3').attr('href', data.url3);
                 }
             },
             error:function (xhr, type) {
