@@ -2,11 +2,13 @@ from django.shortcuts import render
 import paramiko
 from django.http import HttpResponse, JsonResponse
 
-# ssh_ip = "192.168.149.100"
+#ssh_ip = "192.168.149.100"
 ssh_ip = "10.0.4.11"
 ssh_port = 22
 ssh_username = "root"
 ssh_password = "Roger645174748"
+domain = "http://101.34.204.211/root/"
+#domain = "http://192.168.149.100/root/"
 
 
 def insertuser(u, p):
@@ -137,14 +139,18 @@ def reg_view(request):
             insertuser(user, pwd)
             createcrt(user)
             print("账户开通成功")
-            url_address = "http://101.34.204.211/root/" + user + ".ovpn"
-            url2_address = "http://101.34.204.211/root/达牛VPN使用文档.docx"
-            url3_address = "http://101.34.204.211/root/Tunnelblick_3.8.3_build_5520.dmg"
-            url4_address = "http://101.34.204.211/root/openvpn-install-2.4.9-I601-Win10.exe"
-            url4_address = "http://101.34.204.211/root/openvpn-install-2.4.9-I601-Win7.exe"
+            url_address = domain + user + ".ovpn"
+            url2_address = domain + "达牛VPN使用文档.docx"
+            url3_address = domain + "Tunnelblick_3.8.3_build_5520.dmg"
+            url4_address = domain + "openvpn-install-2.4.9-I601-Win10.exe"
+            url5_address = domain + "openvpn-install-2.4.9-I601-Win7.exe"
 
-            res = {"result": "%s 的账户开通成功!" % user, "url": url_address,
-                   "url2": url2_address, "url3": url3_address, "url2": url2_address, "url2": url2_address,}
+            res = {"result": "%s 的账户开通成功!" % user,
+                   "url": url_address,
+                   "url2": url2_address,
+                   "url3": url3_address,
+                   "url4": url4_address,
+                   "url5": url5_address,}
             # print(type(res))
 
             return JsonResponse(res, safe=False)
